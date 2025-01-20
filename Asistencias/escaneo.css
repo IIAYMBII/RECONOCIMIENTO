@@ -1,0 +1,140 @@
+
+.input {
+  border: none;
+  border-radius: 15px;
+  padding: 15px;
+  background-color: #e8e8e8;
+  box-shadow: 6px 6px 12px #ffffff,
+              -6px -6px 12px #0202ee;
+  font-size: medium;
+  font-weight: bold;
+  max-width: 200px;
+ }
+ 
+ .input:focus {
+  outline-color: white;
+  place-content: "Enter your message!";
+ }
+ 
+ /* CSS para el formulario de búsqueda */
+
+
+
+@keyframes blob-bounce {
+0% {
+transform: translate(-100%, -100%) translate3d(0, 0, 0);
+}
+
+25% {
+transform: translate(-100%, -100%) translate3d(100%, 0, 0);
+}
+
+50% {
+transform: translate(-100%, -100%) translate3d(100%, 100%, 0);
+}
+
+75% {
+transform: translate(-100%, -100%) translate3d(0, 100%, 0);
+}
+
+100% {
+transform: translate(-100%, -100%) translate3d(0, 0, 0);
+}
+}
+
+
+.container {
+display: flex;
+flex-direction: column; /* Hace que los elementos se apilen verticalmente */
+justify-content: center; /* Centra los elementos verticalmente */
+align-items: center; /* Centra los elementos horizontalmente */
+height: 100vh; /* Ocupa toda la altura de la pantalla */
+}
+
+.qr-reader-box, .result-box {
+width: 100%; /* Ocupa todo el ancho disponible */
+max-width: 400px; /* Limita el ancho máximo */
+padding: 20px; /* Agrega padding interno */
+border: 2px solid #ccc; /* Bordes para ambos elementos */
+border-radius: 8px; /* Bordes redondeados */
+background-color: #f9f9f9; /* Fondo ligero */
+margin-bottom: 20px; /* Espaciado entre los elementos */
+text-align: center; /* Centra el texto en ambos elementos */
+}
+
+#validate-btn {
+padding: 10px 20px;
+font-size: 16px;
+border: none;
+background-color: #007bff;
+color: white;
+border-radius: 5px;
+cursor: pointer;
+}
+
+#validate-btn:hover {
+background-color: #0056b3;
+}
+
+
+
+
+   #qr-reader {
+       width: 100%;
+       max-width: 500px;
+   }
+
+   #result {
+       margin-top: 20px;
+       font-size: 18px;
+       font-weight: bold;
+   }
+
+
+button {
+padding: 1.3em 3em;
+font-size: 12px;
+text-transform: uppercase;
+letter-spacing: 2.5px;
+font-weight: 500;
+color: #000;
+background-color: #ffffff;
+border: none;
+border-radius: 45px;
+box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+transition: all 0.3s ease 0s;
+cursor: pointer;
+outline: none;
+}
+
+button:hover {
+background-color: #010abb;
+box-shadow: 0px 15px 20px rgba(10, 2, 99, 0.49);
+color: #fff;
+transform: translateY(-7px);
+}
+
+button:active {
+transform: translateY(-1px);
+}
+.u-section-11 {
+min-height: 110vh;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 20px;
+background: rgb(6, 7, 48);
+background: linear-gradient(0deg, rgba(6, 7, 48, 1) 0%, rgba(255, 255, 255, 0.72) 91%), 
+         url('font.jpg');
+background-size: cover;
+background-repeat: no-repeat;
+background-position: center;
+margin: 0;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+ 

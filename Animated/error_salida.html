@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error 404</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            margin: 0;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            color: #333;
+            text-align: center;
+        }
+        .error-icon {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            animation: shake 0.5s infinite;
+        }
+        .error-icon::before, .error-icon::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 100px;
+            background-color: #e74c3c;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+        }
+        .error-icon::after {
+            transform: translateX(-50%) rotate(-45deg);
+        }
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            50% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+            100% { transform: rotate(0deg); }
+        }
+        h1 {
+            margin-top: 20px;
+            font-size: 2rem;
+            color: #e74c3c;
+        }
+        p {
+            font-size: 1.2rem;
+        }
+        a {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+   
+
+        <div class="checkmark" id="checkmark"></div>
+        <h1 id="message">¡ERROR DE SALIDA!</h1>
+        <div class="error-icon"></div>
+        <h1>Error de verificar salida</h1>
+        <p>Lo sentimos, la verificacion es invalida intentelo nuevamente !!</p>
+        <!-- Sonido de verificación -->
+        <audio id="verifySound" autoplay>
+            <source src="ERROR_ENTRADA.mp3" type="audio/mpeg">
+            Tu navegador no soporta la reproducción de audio.
+        </audio>
+    
+        <script>
+            const checkmark = document.getElementById('checkmark');
+            const audio = document.getElementById('verifySound');
+    
+            // Mostrar la animación de la palomita
+            checkmark.style.visibility = 'visible';
+    
+            // Reproducir el sonido automáticamente
+            audio.play().then(() => {
+                console.log("Audio reproducido correctamente.");
+            }).catch((error) => {
+                console.error("Error al reproducir el audio: ", error);
+            });
+    
+            // Redireccionar a la página principal después de 5 segundos
+            setTimeout(function() {
+                window.location.href =  "http://127.0.0.1:5000"; // Cambia "index.html" por la URL deseada
+            }, 5000);
+        </script>
+    
+ 
+
+</body>
+</html>

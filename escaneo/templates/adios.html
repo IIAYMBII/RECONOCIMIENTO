@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasta pronto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gracias por usar el sistema. ¡Hasta pronto!</h1>
+
+    <script>
+        // Redirige después de 3 segundos y luego cierra la ventana
+        setTimeout(function() {
+            // Intenta cerrar la ventana actual
+            window.close(); // Esto cerrará la ventana actual
+
+            // Verifica si la ventana se ha cerrado correctamente
+            if (window.closed) {
+                console.log("La ventana se cerró.");
+            } else {
+                // Si no se puede cerrar, muestra un mensaje
+                console.log("La ventana no se cerró automáticamente.");
+            }
+        }, 3000); // Intenta cerrar la ventana después de 3 segundos
+    </script>
+</body>
+</html>

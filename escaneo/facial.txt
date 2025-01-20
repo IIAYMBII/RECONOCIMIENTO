@@ -1,0 +1,112 @@
+import cv2
+import face_recognition
+import mysql.connector
+import json
+import tkinter as tk
+from tkinter import messagebox
+import threading
+import time
+
+# Configuración de la base de datos
+db = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="sistema_escolar"  # Actualiza el nombre de la base de datos
+)
+cursor = db.cursor()
+
+# Función para cargar los rostros registrados desde la base de datos
+def cargar_rostros():
+    cursor.execute("SELECT numero_control, nombre_completo, rostro_encoding FROM registro_qr")  # Actualiza el nombre de la tabla
+    datos = cursor.fetchall()
+    rostros_registrados = {"datos": [], "encodings": []}
+    
+    for numero_control, nombre_completo, encoding in datos:
+        if encoding is None or encoding == "":
+            print(f"El encoding para {numero_control} es NULL o vacío.")
+        else:
+            rostros_registrados["datos"].append({"numero_control": numero_control, "nombre_completo": nombre_completo})
+            try:
+                rostros_registrados["encodings"].append(json.loads(encoding))  
+            except json.JSONDecodeError:
+                print(f"Error al decodificar el encoding para {numero_control}")
+    
+    return rostros_registrados
+
+# Función para reconocer rostros en un frame
+def reconocimiento_facial(frame, rostros_registrados):
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    rostros_encodings = face_recognition.face_encodings(rgb_frame)
+    if rostros_encodings:
+        for rostro_encoding in rostros_encodings:
+            resultados = face_recognition.compare_faces(rostros_registrados["encodings"], rostro_encoding, tolerance=0.6)
+            if True in resultados:
+                index = resultados.index(True)
+                return rostros_registrados["datos"][index]  # Devuelve los datos del rostro reconocido
+    return None
+
+# Función para mostrar la interfaz gráfica
+def mostrar_interfaz(alumno_reconocido):
+    root = tk.Tk()
+    root.title("Reconocimiento Facial")
+    root.geometry("300x200")
+
+    # Mostrar la información del alumno reconocido
+    label = tk.Label(root, text=f"Nombre: {alumno_reconocido['nombre_completo']}\nNúmero de control: {alumno_reconocido['numero_control']}")
+    label.pack(pady=20)
+
+    # Función para cerrar la ventana después de mostrar la información
+    def cerrar_ventana():
+        messagebox.showinfo("Reconocimiento Exitoso", "Reconocimiento completado correctamente.")
+        root.quit()
+
+    # Botón para cerrar la ventana
+    btn_cerrar = tk.Button(root, text="Cerrar", command=cerrar_ventana)
+    btn_cerrar.pack(pady=10)
+    
+    # Esperamos 15 segundos antes de cerrar la ventana automáticamente
+    threading.Timer(15, cerrar_ventana).start()
+
+    # Llamamos al método para cerrar la ventana después de 15 segundos
+    root.after(15000, root.quit)
+    root.mainloop()
+
+# Función principal para verificar reconocimiento facial
+def verificar_rostro():
+    rostros_registrados = cargar_rostros()  # Cargar datos de la base de datos
+    cap = cv2.VideoCapture(0)
+    
+    tiempo_expiracion = 15  # 15 segundos de espera para reconocer el rostro
+
+    inicio = time.time()
+    alumno_reconocido = None
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            print("Error al acceder a la cámara.")
+            break
+        
+        # Reconocimiento facial
+        alumno_reconocido = reconocimiento_facial(frame, rostros_registrados)
+        if alumno_reconocido:
+            print(f"Rostro reconocido: {alumno_reconocido['nombre_completo']}, Número de control: {alumno_reconocido['numero_control']}")
+            mostrar_interfaz(alumno_reconocido)
+            break  # Si el rostro se reconoce, termina el bucle
+
+        cv2.imshow("Reconocimiento Facial", frame)
+        
+        # Salir si pasan 15 segundos o si el usuario presiona 'q'
+        if time.time() - inicio > tiempo_expiracion or cv2.waitKey(1) & 0xFF == ord('q'):
+            print("Tiempo expirado o salida manual")
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+# Ejecutar la función
+verificar_rostro()
+
+# Cerrar la conexión a la base de datos
+db.close()

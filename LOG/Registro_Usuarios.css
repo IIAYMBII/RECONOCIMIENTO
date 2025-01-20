@@ -1,0 +1,125 @@
+ .u-section-1 {
+  background-image: linear-gradient(0deg, rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('../images/abstract-green-yellow-wavy-background-vector.jpg');
+  background-position: 50% 50%;
+}
+
+.u-section-1 .u-sheet-1 {
+  min-height: 506px;
+}
+
+.u-section-1 .u-text-1 {
+  font-family: Comfortaa;
+  margin: 66px 795px 0 519px;
+}
+
+.u-section-1 .u-form-1 {
+  height: 155px;
+  margin: 15px 726px 0 504px;
+}
+
+.u-section-1 .u-input-1 {
+  --radius: 28px;
+  box-shadow: 0px -2px 8px 0px rgba(128,128,128,1);
+}
+
+.u-section-1 .u-form-group-2 {
+  margin-left: 0;
+}
+
+.u-section-1 .u-input-2 {
+  --radius: 28px;
+  box-shadow: 0px -2px 8px 0px rgba(128,128,128,1);
+}
+
+.u-section-1 .u-btn-1 {
+  --radius: 14px;
+  background-image: none;
+}
+
+.u-section-1 .u-btn-2 {
+  --radius: 50px;
+  background-image: none;
+}
+
+.u-section-1 .u-btn-3 {
+  --radius: 14px;
+  background-image: none;
+}
+
+.u-section-1 .u-btn-4 {
+  --radius: 50px;
+  background-image: none;
+  margin: 66px auto 32px 640px;
+}
+
+.u-section-1 .u-icon-1 {
+  font-size: 3.875em;
+}
+
+@media (max-width: 1199px) {
+  .u-section-1 .u-sheet-1 {
+    min-height: 264px;
+  }
+
+  .u-section-1 .u-text-1 {
+    margin-right: 415px;
+    margin-left: 692px;
+  }
+
+  .u-section-1 .u-form-1 {
+    margin-right: 722px;
+    margin-left: 508px;
+  }
+
+  .u-section-1 .u-btn-4 {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 991px) {
+  .u-section-1 .u-sheet-1 {
+    min-height: 202px;
+  }
+
+  .u-section-1 .u-text-1 {
+    margin-right: 318px;
+    margin-left: 741px;
+  }
+
+  .u-section-1 .u-form-1 {
+    margin-right: 690px;
+    margin-left: 540px;
+  }
+}
+
+@media (max-width: 767px) {
+  .u-section-1 .u-sheet-1 {
+    min-height: 152px;
+  }
+
+  .u-section-1 .u-text-1 {
+    margin-right: 239px;
+    margin-left: 781px;
+  }
+
+  .u-section-1 .u-form-1 {
+    margin-left: 630px;
+    margin-right: 630px;
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-1 .u-sheet-1 {
+    min-height: 96px;
+  }
+
+  .u-section-1 .u-text-1 {
+    margin-right: 150px;
+    margin-left: 825px;
+  }
+
+  .u-section-1 .u-form-1 {
+    margin-left: 730px;
+    margin-right: 730px;
+  }
+}

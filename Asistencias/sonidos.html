@@ -1,0 +1,40 @@
+<script>
+// Hacer fetch al servidor con los datos del QR
+fetch('procesar_qr.php', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        data: 'contenido_del_QR'
+    })
+})
+.then(response => response.json())
+.then(data => {
+    let audio; // Variable para almacenar el sonido
+
+    // Condiciones para reproducir sonidos según el mensaje de respuesta
+    if (data.message === 'Entrada registrada exitosamente.') {
+        audio = new Audio('./sonidos/entrada-exitosa.mp3');
+    } else if (data.message === 'Error al registrar entrada.') {
+        audio = new Audio('./sonidos/error-entrada.mp3');
+    } else if (data.message === 'Salida registrada exitosamente.') {
+        audio = new Audio('./sonidos/salida-exitosa.mp3');
+    } else if (data.message === 'Error al registrar salida.') {
+        audio = new Audio('./sonidos/error-salida.mp3');
+    } else if (data.message === 'Fuera del horario permitido.') {
+        audio = new Audio('./sonidos/entrada-exitosa.mp3');
+    } else if (data.message === 'El número de control no está registrado.') {
+        audio = new Audio('./sonidos/numero-control-no-registrado.mp3');
+    }
+
+    // Reproducir el sonido si fue asignado
+    if (audio) {
+        audio.play();
+    }
+
+    // Mostrar el mensaje en pantalla
+    alert(data.message);
+})
+.catch(error => console.error('Error:', error));
+</script>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Número de Control No Existe</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            margin: 0;
+            flex-direction: column;
+        }
+        .error-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f44336; /* Rojo para indicar error */
+            position: relative;
+            animation: popIn 0.5s ease forwards;
+            visibility: hidden;
+        }
+        .error-icon::before, .error-icon::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 30px;
+            background-color: white;
+            opacity: 0;
+            animation: drawError 0.5s 0.2s ease forwards;
+        }
+        .error-icon::before {
+            transform: rotate(45deg);
+        }
+        .error-icon::after {
+            transform: rotate(-45deg);
+        }
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+            }
+            100% {
+                transform: scale(1);
+                visibility: visible;
+            }
+        }
+        @keyframes drawError {
+            0% {
+                opacity: 0;
+                height: 0;
+            }
+            100% {
+                opacity: 1;
+                height: 30px;
+            }
+        }
+        h1 {
+            color: #333;
+            font-family: Arial, sans-serif;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="error-icon" id="errorIcon"></div>
+    <h1 id="message">¡Número de control no existe!</h1>
+
+    <!-- Sonido de error (cambia la ruta según necesites) -->
+    <audio id="errorSound" autoplay>
+        <source src="ERROR_ENTRADA.mp3" type="audio/mpeg">
+        Tu navegador no soporta la reproducción de audio.
+    </audio>
+
+    <script>
+        const errorIcon = document.getElementById('errorIcon');
+        const audio = document.getElementById('errorSound');
+
+        // Mostrar la animación de error
+        errorIcon.style.visibility = 'visible';
+
+        // Reproducir el sonido automáticamente
+        audio.play().then(() => {
+            console.log("Audio reproducido correctamente.");
+        }).catch((error) => {
+            console.error("Error al reproducir el audio: ", error);
+        });
+
+        // Redireccionar a la página principal después de 5 segundos
+        setTimeout(function() {
+            window.location.href =  "http://127.0.0.1:5000"; // Cambia "index.html" por la URL deseada
+        }, 5000);
+    </script>
+
+</body>
+</html>

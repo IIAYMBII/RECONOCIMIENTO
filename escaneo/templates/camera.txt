@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reconocimiento Facial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        #videoElement {
+            border: 2px solid #333;
+            border-radius: 10px;
+        }
+        #controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+        #loading {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
+    
+</head>
+<body>
+
+    <video id="videoElement" width="640" height="480" autoplay></video>
+
+    <div id="controls">
+        <button id="startButton">Iniciar cámara</button>
+        <button id="stopButton" disabled>Detener cámara</button>
+        <button id="exitButton">Salir</button>
+    </div>
+
+    <div id="loading" style="display: none;">Reconociendo rostro...</div>
+    <div id="result"></div>
+
+   
+
+
+<script>
+    const exitButton = document.getElementById("exitButton");
+
+    // Lógica para el botón "Salir"
+    exitButton.addEventListener("click", () => {
+        fetch('/salir', { method: 'POST' })
+            .then(() => {
+                window.location.href = '/adios'; // Redirige al HTML de despedida
+            })
+            .catch(err => {
+                console.error("Error al salir:", err);
+            });
+    });
+</script>
+
+    <script>
+        const videoElement = document.getElementById("videoElement");
+        const startButton = document.getElementById("startButton");
+        const stopButton = document.getElementById("stopButton");
+        const resultDiv = document.getElementById("result");
+        const loadingDiv = document.getElementById("loading");
+
+        let mediaStream;
+        let reconocimientoEnProgreso = false;
+
+        // Función para iniciar la cámara
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    mediaStream = stream;
+                    videoElement.srcObject = stream;
+                    startButton.disabled = true;
+                    stopButton.disabled = false;
+                })
+                .catch(function(error) {
+                    console.error("Error al acceder a la cámara: ", error);
+                    alert("No se pudo acceder a la cámara.");
+                });
+        }
+
+        // Función para detener la cámara
+        function stopCamera() {
+            let tracks = mediaStream.getTracks();
+            tracks.forEach(track => track.stop());
+            videoElement.srcObject = null;
+            startButton.disabled = false;
+            stopButton.disabled = true;
+        }
+
+        // Función para capturar un frame del video
+        function capturarFrame() {
+            const canvas = document.createElement('canvas');
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+            return canvas.toDataURL('image/png'); // Retorna la imagen en formato Base64
+        }
+
+        // Función para enviar la imagen al servidor
+        function reconocerRostro() {
+            if (reconocimientoEnProgreso) return;
+
+            reconocimientoEnProgreso = true;
+            loadingDiv.style.display = 'block'; // Mostrar indicador de carga
+            resultDiv.innerHTML = ''; // Limpiar resultados anteriores
+
+            const imageData = capturarFrame();
+
+            fetch('/reconocer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ image: imageData })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.nombre_completo) {
+                    resultDiv.innerHTML = `Rostro reconocido: ${data.nombre_completo}<br>Número de control: ${data.numero_control}`;
+                } else {
+                    resultDiv.innerHTML = `Error: ${data.error}`;
+                }
+            })
+            .catch(error => {
+                console.error('Error al reconocer el rostro:', error);
+                resultDiv.innerHTML = 'Error al procesar el reconocimiento.';
+            })
+            .finally(() => {
+                loadingDiv.style.display = 'none'; // Ocultar indicador de carga
+                reconocimientoEnProgreso = false;
+            });
+        }
+        
+
+        // Agregar eventos a los botones
+        startButton.addEventListener("click", startCamera);
+        stopButton.addEventListener("click", stopCamera);
+
+        // Reconocimiento cada 5 segundos
+        setInterval(() => {
+            if (mediaStream) reconocerRostro();
+        }, 5000);
+    </script>
+
+</body>
+</html>

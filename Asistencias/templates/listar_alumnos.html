@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Alumnos</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        /* Estilos del filtro */
+        #filtro {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #filtro input {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            width: 300px;
+            border-radius: 4px;
+        }
+
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        // Función para filtrar la tabla por número de control
+        function filtrarTabla() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("inputFiltro");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("tablaAlumnos");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 1; i < tr.length; i++) { // Empieza en 1 para saltar el encabezado
+                td = tr[i].getElementsByTagName("td")[2]; // Índice 2 = Número de Control
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }       
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Listado de Alumnos Registrados</h1>
+
+    <!-- Filtro de Número de Control -->
+    <div id="filtro">
+        <label for="inputFiltro">Buscar por Número de Control:</label>
+        <input type="text" id="inputFiltro" onkeyup="filtrarTabla()" placeholder="Escribe el número de control...">
+    </div>
+
+    <table id="tablaAlumnos">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre Completo</th>
+                <th>Número de Control</th>
+                <th>Carrera</th>
+                <th>Código QR</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for alumno in alumnos %}
+            <tr>
+                <td>{{ alumno[0] }}</td>
+                <td>{{ alumno[1] }}</td>
+                <td>{{ alumno[2] }}</td>
+                <td>{{ alumno[3] }}</td>
+                <td><img src="{{ url_for('static', filename=alumno[4]) }}" alt="Código QR" width="100"></td>
+                <td>
+                    <a href="{{ url_for('editar_alumno', id=alumno[0]) }}">Editar</a> |
+                    <a href="{{ url_for('eliminar_alumno', id=alumno[0]) }}" onclick="return confirm('¿Estás seguro de eliminar este alumno?');">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <br>
+    <a href="/">Registrar otro alumno</a>
+</body>
+</html>

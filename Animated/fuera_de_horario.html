@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación Fallida</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            margin: 0;
+            flex-direction: column;
+        }
+        .x-mark {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #F44336; /* Rojo para indicar error */
+            position: relative;
+            animation: popIn 0.5s ease forwards;
+            visibility: hidden;
+        }
+        .x-mark::before, .x-mark::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 5px;
+            background-color: white;
+            border-radius: 2px;
+        }
+        .x-mark::before {
+            transform: rotate(45deg); /* Primera línea de la X */
+            animation: drawX 0.5s 0.2s ease forwards;
+            opacity: 0;
+        }
+        .x-mark::after {
+            transform: rotate(-45deg); /* Segunda línea de la X */
+            animation: drawX 0.5s 0.2s ease forwards;
+            opacity: 0;
+        }
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+            }
+            100% {
+                transform: scale(1);
+                visibility: visible;
+            }
+        }
+        @keyframes drawX {
+            0% {
+                opacity: 0;
+                width: 0;
+            }
+            100% {
+                opacity: 1;
+                width: 60px;
+            }
+        }
+        h1 {
+            color: #333;
+            font-family: Arial, sans-serif;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="x-mark" id="x-mark"></div>
+    <h1 id="message">¡ERROR!  Fuera de Horario  NO HAY CLASES DISPONIBLES</h1>
+
+    <!-- Sonido de error -->
+    <audio id="verifySound" autoplay>
+        <source src="ERROR_ENTRADA.mp3" type="audio/mpeg">
+        Tu navegador no soporta la reproducción de audio.
+    </audio>
+
+    <script>
+        const xMark = document.getElementById('x-mark');
+        const audio = document.getElementById('verifySound');
+
+        // Mostrar la animación de la "X"
+        xMark.style.visibility = 'visible';
+
+        // Redireccionar a la página principal después de 5 segundos
+        setTimeout(function() {
+            window.location.href = "http://127.0.0.1:5000"; // Cambia "index.html" por la URL deseada
+        }, 5000);
+    </script>
+
+</body>
+</html>
+ 

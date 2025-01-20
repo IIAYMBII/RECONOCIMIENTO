@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Exitoso</title>
+</head>
+<body>
+    <h1>¡Registro Exitoso!</h1>
+    <p>El alumno <strong>{{ nombre_completo }}</strong> ha sido registrado con éxito.</p>
+    <p>El código QR ha sido generado:</p>
+    <img src="{{ url_for('static', filename=qr_filename) }}" alt="Código QR"><br><br>
+
+    <a href="/">Registrar otro alumno</a>
+</body>
+</html>
